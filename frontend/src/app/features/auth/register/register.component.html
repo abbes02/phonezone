@@ -1,0 +1,170 @@
+<div class="register-page">
+  <div class="register-bg-shape shape-one"></div>
+  <div class="register-bg-shape shape-two"></div>
+
+  <div class="register-container">
+    <div class="register-brand-panel">
+      <div class="brand-content">
+        <div class="brand-logo-wrap">
+          <img src="assets/logoo.png" alt="PhoneZone">
+        </div>
+
+        <span class="brand-kicker">Bienvenue chez PhoneZone</span>
+
+        <h1>Créez votre compte client</h1>
+
+        <p>
+          Suivez vos commandes, vos réparations et vos avantages fidélité depuis un seul espace.
+        </p>
+
+        <div class="brand-benefits">
+          <div>
+            <span>✓</span>
+            <strong>Commandes suivies</strong>
+          </div>
+
+          <div>
+            <span>✓</span>
+            <strong>Réparations rapides</strong>
+          </div>
+
+          <div>
+            <span>✓</span>
+            <strong>Avantages fidélité</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="register-card">
+      <div class="register-header">
+        <span class="auth-kicker">Inscription</span>
+        <h2>Créer un compte</h2>
+        <p>Remplissez vos informations pour commencer.</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="form-group">
+          <label for="fullName">Nom complet</label>
+
+          <div class="input-box" [class.invalid]="hasError('fullName')">
+            <span class="input-icon">👤</span>
+
+            <input
+              id="fullName"
+              type="text"
+              formControlName="fullName"
+              placeholder="Ex: Mehdi Abbes"
+              autocomplete="name"
+            >
+          </div>
+
+          <small class="field-error" *ngIf="hasError('fullName')">
+            Le nom complet est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Adresse email</label>
+
+          <div class="input-box" [class.invalid]="hasError('email')">
+            <span class="input-icon">✉</span>
+
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="exemple@gmail.com"
+              autocomplete="email"
+            >
+          </div>
+
+          <small class="field-error" *ngIf="hasError('email')">
+            Veuillez saisir une adresse email valide.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+
+          <div class="input-box" [class.invalid]="hasError('password')">
+            <span class="input-icon">🔒</span>
+
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Minimum 8 caractères"
+              autocomplete="new-password"
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="showPassword = !showPassword"
+              aria-label="Afficher ou masquer le mot de passe"
+            >
+              {{ showPassword ? 'Masquer' : 'Voir' }}
+            </button>
+          </div>
+
+          <small class="field-error" *ngIf="hasError('password')">
+            Le mot de passe doit contenir au moins 8 caractères.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm">Confirmation du mot de passe</label>
+
+          <div
+            class="input-box"
+            [class.invalid]="
+              hasError('confirm') ||
+              (form.hasError('mismatch') && form.get('confirm')?.touched)
+            "
+          >
+            <span class="input-icon">🔐</span>
+
+            <input
+              id="confirm"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              formControlName="confirm"
+              placeholder="Confirmez votre mot de passe"
+              autocomplete="new-password"
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="showConfirmPassword = !showConfirmPassword"
+              aria-label="Afficher ou masquer la confirmation"
+            >
+              {{ showConfirmPassword ? 'Masquer' : 'Voir' }}
+            </button>
+          </div>
+
+          <small
+            class="field-error"
+            *ngIf="form.hasError('mismatch') && form.get('confirm')?.touched"
+          >
+            Les mots de passe ne correspondent pas.
+          </small>
+        </div>
+
+        <div class="form-error" *ngIf="error">
+          {{ error }}
+        </div>
+
+        <button type="submit" class="register-btn" [disabled]="loading">
+          <span *ngIf="!loading">Créer mon compte</span>
+          <span *ngIf="loading">Création...</span>
+        </button>
+      </form>
+
+      <p class="auth-link">
+        Déjà un compte ?
+        <a routerLink="/login">Se connecter</a>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+@import '../../../../styles/variables';
+.page-title { font-size: 2rem; color: $color-primary; margin-bottom: $spacing-xl; }
+.status-select { width: 140px; padding: 5px 8px; font-size: .875rem; }
+.empty-cell { text-align: center; color: $color-text-secondary; padding: $spacing-xl !important; }

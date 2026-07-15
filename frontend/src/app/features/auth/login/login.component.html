@@ -1,0 +1,112 @@
+<div class="login-page">
+  <div class="login-bg-shape shape-one"></div>
+  <div class="login-bg-shape shape-two"></div>
+
+  <div class="login-container">
+    <div class="login-brand-panel">
+      <div class="brand-content">
+        <div class="brand-logo-wrap">
+          <img src="assets/logoo.png" alt="PhoneZone">
+        </div>
+
+        <span class="brand-kicker">Espace client PhoneZone</span>
+
+        <h1>Connectez-vous à votre compte</h1>
+
+        <p>
+          Retrouvez vos commandes, vos réparations et vos avantages fidélité en quelques secondes.
+        </p>
+
+        <div class="brand-benefits">
+          <div>
+            <span>✓</span>
+            <strong>Suivi des commandes</strong>
+          </div>
+
+          <div>
+            <span>✓</span>
+            <strong>Réparations en temps réel</strong>
+          </div>
+
+          <div>
+            <span>✓</span>
+            <strong>Fidélité PhoneZone</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-card">
+      <div class="login-header">
+        <span class="auth-kicker">Connexion</span>
+        <h2>Bienvenue</h2>
+        <p>Connectez-vous pour continuer.</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="form-group">
+          <label for="email">Adresse email</label>
+
+          <div class="input-box" [class.invalid]="hasError('email')">
+            <span class="input-icon">✉</span>
+
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="exemple@email.com"
+              autocomplete="email"
+            >
+          </div>
+
+          <small class="field-error" *ngIf="hasError('email')">
+            Veuillez saisir une adresse email valide.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+
+          <div class="input-box" [class.invalid]="hasError('password')">
+            <span class="input-icon">🔒</span>
+
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Votre mot de passe"
+              autocomplete="current-password"
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="showPassword = !showPassword"
+              aria-label="Afficher ou masquer le mot de passe"
+            >
+              {{ showPassword ? 'Masquer' : 'Voir' }}
+            </button>
+          </div>
+
+          <small class="field-error" *ngIf="hasError('password')">
+            Le mot de passe est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-error" *ngIf="error">
+          {{ error }}
+        </div>
+
+        <button type="submit" class="login-btn" [disabled]="loading">
+          <span *ngIf="!loading">Se connecter</span>
+          <span *ngIf="loading">Connexion...</span>
+        </button>
+      </form>
+
+      <p class="auth-link">
+        Pas encore de compte ?
+        <a routerLink="/register">Créer un compte</a>
+      </p>
+    </div>
+  </div>
+</div>

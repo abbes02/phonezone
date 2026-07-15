@@ -1,0 +1,52 @@
+<div class="admin-page">
+  <div class="page-header"><h2>Questions / Diagnostic</h2></div>
+  <app-spinner *ngIf="loading"></app-spinner>
+  <div class="table-card" *ngIf="!loading">
+    <table class="data-table">
+      <thead><tr><th>N°</th><th>Sujet</th><th>Client</th><th>Date</th><th>Statut</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let q of questions">
+          <td><code>{{ q.questionNumber }}</code></td>
+          <td>{{ q.subject }}</td>
+          <td>{{ q.user?.fullName ?? '—' }}</td>
+          <td>{{ q.createdAt | date:'dd/MM/yyyy' }}</td>
+          <td><app-badge [status]="q.isAnswered ? 'answered' : 'PENDING'"></app-badge></td>
+          <td><button class="btn-edit" (click)="open(q)">Voir / Répondre</button></td>
+        </tr>
+        <tr *ngIf="questions.length === 0"><td colspan="6" class="empty">Aucune question</td></tr>
+      </tbody>
+    </table>
+    <app-pagination [currentPage]="page" [totalPages]="totalPages" (pageChange)="page=$event; load()"></app-pagination>
+  </div>
+
+  <div class="modal-overlay" *ngIf="selected" (click)="selected = null">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h3>{{ selected.subject }}</h3>
+      <p><strong>Description :</strong></p>
+      <p style="color:#374151; margin-bottom:16px;">{{ selected.description }}</p>
+
+      <div *ngIf="selected.photoUrls?.length" style="margin-bottom:16px;">
+        <p><strong>Photos :</strong></p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+          <img *ngFor="let url of selected.photoUrls" [src]="'http://localhost:3000/' + url"
+            style="width:80px; height:80px; object-fit:cover; border-radius:8px;" onerror="this.style.display='none'">
+        </div>
+      </div>
+
+      <div *ngIf="selected.adminResponse" style="background:#EFF6FF; padding:12px; border-radius:8px; margin-bottom:16px;">
+        <p><strong>Réponse précédente :</strong></p>
+        <p>{{ selected.adminResponse }}</p>
+      </div>
+
+      <div class="form-group">
+        <label>Votre réponse</label>
+        <textarea class="form-control" [(ngModel)]="answer" rows="4" placeholder="Répondre au client..."></textarea>
+      </div>
+      <div class="error-msg" *ngIf="error">{{ error }}</div>
+      <div class="form-actions">
+        <button class="btn-cancel" (click)="selected = null">Fermer</button>
+        <button class="btn-primary" (click)="sendAnswer()">Envoyer la réponse</button>
+      </div>
+    </div>
+  </div>
+</div>

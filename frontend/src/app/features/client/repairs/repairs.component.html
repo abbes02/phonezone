@@ -1,0 +1,265 @@
+<div class="repairs-page">
+  <h2>Réparations</h2>
+
+  <div class="ready-msg" *ngIf="loyaltyMessage">
+    {{ loyaltyMessage }}
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="tab === 'services'" (click)="tab = 'services'">
+      Services
+    </button>
+
+    <button
+      class="tab"
+      [class.active]="tab === 'my'"
+      (click)="tab = 'my'"
+      *ngIf="auth.isAuthenticated()"
+    >
+      Mes réparations
+    </button>
+  </div>
+
+  <div *ngIf="tab === 'services'">
+    <div class="services-grid">
+      <div class="service-card" *ngFor="let s of services">
+        <img
+          class="service-photo"
+          *ngIf="s.imageUrl"
+          [src]="imageUrl(s.imageUrl)"
+          [alt]="s.name"
+        >
+
+        <h3>{{ s.name }}</h3>
+        <p>{{ s.description }}</p>
+
+        <div class="service-footer">
+          <span class="price" *ngIf="s.indicativePrice">
+            À partir de {{ s.indicativePrice | number:'1.2-2' }} TND
+          </span>
+
+          <button class="btn-primary" (click)="openForm(s.id)" *ngIf="auth.isAuthenticated()">
+            Demander
+          </button>
+
+          <a routerLink="/login" class="btn-primary" *ngIf="!auth.isAuthenticated()">
+            Se connecter
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="repair-form-overlay" *ngIf="showForm" (click)="showForm = false">
+      <div class="repair-form-card" (click)="$event.stopPropagation()">
+        <div class="form-title">
+          <span>Atelier PhoneZone</span>
+          <h3>Demande de réparation</h3>
+          <p>Choisissez comment votre téléphone arrive à la boutique.</p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="form-group">
+            <label>Modèle de téléphone</label>
+            <input
+              formControlName="phoneModel"
+              class="form-control"
+              placeholder="iPhone 14, Samsung S23..."
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Description du problème</label>
+            <textarea
+              formControlName="problemDescription"
+              class="form-control"
+              rows="3"
+              placeholder="Décrivez le problème..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Coordonnées</label>
+            <input
+              formControlName="contactInfo"
+              class="form-control"
+              placeholder="Téléphone ou email"
+            >
+          </div>
+
+          <div class="pickup-card">
+            <div class="pickup-card-header">
+              <div>
+                <span class="pickup-kicker">Collecte</span>
+                <h4>Comment le téléphone arrive à la boutique ?</h4>
+              </div>
+            </div>
+
+            <div class="pickup-options">
+              <label
+                class="pickup-option"
+                [class.active]="form.value.dropOffOption === 'IN_STORE'"
+              >
+                <input
+                  type="radio"
+                  value="IN_STORE"
+                  formControlName="dropOffOption"
+                  (change)="onDropOffOptionChange('IN_STORE')"
+                >
+
+                <span class="pickup-icon">🏪</span>
+
+                <span>
+                  <strong>Je dépose en boutique</strong>
+                  <small>Vous apportez votre téléphone directement.</small>
+                </span>
+              </label>
+
+              <label
+                class="pickup-option"
+                [class.active]="form.value.dropOffOption === 'PICKUP_BY_DELIVERY'"
+              >
+                <input
+                  type="radio"
+                  value="PICKUP_BY_DELIVERY"
+                  formControlName="dropOffOption"
+                  (change)="onDropOffOptionChange('PICKUP_BY_DELIVERY')"
+                >
+
+                <span class="pickup-icon">🚚</span>
+
+                <span>
+                  <strong>Envoyer un livreur</strong>
+                  <small>Un livreur récupère le téléphone chez vous à Sousse.</small>
+                </span>
+              </label>
+            </div>
+
+            <div class="pickup-fields" *ngIf="form.value.dropOffOption === 'PICKUP_BY_DELIVERY'">
+              <label class="field-group">
+                <span>Téléphone</span>
+                <input
+                  type="tel"
+                  class="form-control"
+                  formControlName="pickupPhone"
+                  placeholder="Ex: 22123456"
+                >
+              </label>
+
+              <label class="field-group">
+                <span>Ville</span>
+                <input
+                  type="text"
+                  class="form-control readonly-city"
+                  formControlName="pickupCity"
+                  readonly
+                >
+              </label>
+
+              <label class="field-group full">
+                <span>Adresse de collecte à Sousse</span>
+                <textarea
+                  rows="3"
+                  class="form-control"
+                  formControlName="pickupAddress"
+                  placeholder="Rue, quartier, immeuble, étage..."
+                ></textarea>
+              </label>
+
+            </div>
+          </div>
+
+          <p class="payment-note">
+            Aucun prix final avant diagnostic. Paiement après confirmation.
+          </p>
+
+          <div class="error-msg" *ngIf="error">
+            {{ error }}
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" (click)="showForm = false">
+              Annuler
+            </button>
+
+            <button type="submit" class="btn-primary" [disabled]="submitting">
+              {{ submitting ? 'Envoi...' : 'Soumettre' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="confirmation" *ngIf="confirmed">
+      <p>
+        Demande enregistrée ! Référence :
+        <strong>{{ refNumber }}</strong>
+      </p>
+      <p class="payment-note">
+        Votre demande sera vérifiée par l’atelier PhoneZone.
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="tab === 'my'">
+    <div class="my-repairs" *ngFor="let r of myRepairs">
+      <div class="repair-card">
+        <div class="repair-header">
+          <span class="ref">{{ r.referenceNumber }}</span>
+          <app-badge [status]="r.status"></app-badge>
+        </div>
+
+        <p><strong>{{ r.service.name }}</strong></p>
+        <p>{{ r.phoneModel }} - {{ r.createdAt | date:'dd/MM/yyyy' }}</p>
+
+        <p class="repair-status-text">
+          Arrivée téléphone :
+          <strong>{{ dropOffLabel(r) }}</strong>
+        </p>
+
+        <div class="pickup-summary" *ngIf="r.dropOffOption === 'PICKUP_BY_DELIVERY'">
+          <p><strong>Livreur demandé</strong></p>
+          <p>Téléphone : {{ r.pickupPhone || '—' }}</p>
+          <p>Ville : {{ r.pickupCity || 'Sousse' }}</p>
+          <p>Adresse : {{ r.pickupAddress || '—' }}</p>
+          <p *ngIf="r.pickupSlot">
+            Créneau : {{ r.pickupSlot | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+        </div>
+
+        <p class="repair-status-text">
+          État de réparation :
+          <strong>{{ statusLabel(r.status) }}</strong>
+        </p>
+
+        <p *ngIf="r.status === 'READY' && r.finalPrice" class="repair-status-text">
+          Prix final :
+          <strong>{{ r.finalPrice | number:'1.2-2' }} TND</strong>
+          <span *ngIf="r.discountApplied"> - réduction fidélité appliquée</span>
+        </p>
+
+        <div class="recovery-section" *ngIf="r.status === 'READY' && !r.recoveryOption">
+          <p class="ready-msg">Votre téléphone est prêt !</p>
+
+          <div class="recovery-btns">
+            <button class="btn-recovery" (click)="setRecovery(r, 'IN_STORE')">
+              Retrait en boutique
+            </button>
+
+            <button class="btn-recovery" (click)="setRecovery(r, 'HOME_DELIVERY')">
+              Livraison à domicile
+            </button>
+          </div>
+        </div>
+
+        <p *ngIf="r.recoveryOption" class="recovery-chosen">
+          {{ r.recoveryOption === 'IN_STORE' ? 'Retrait en boutique' : 'Livraison à domicile' }}
+          - Paiement sur place
+        </p>
+      </div>
+    </div>
+
+    <p *ngIf="myRepairs.length === 0" class="empty">
+      Aucune réparation en cours
+    </p>
+  </div>
+</div>

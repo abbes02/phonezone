@@ -1,0 +1,288 @@
+<div class="cart-page">
+  <header class="cart-header">
+    <div>
+      <span class="eyebrow">Commande</span>
+      <h2>Mon panier</h2>
+    </div>
+
+    <a routerLink="/catalog" class="catalog-link">Continuer mes achats</a>
+  </header>
+
+  <div class="confirmation" *ngIf="confirmed">
+    <div class="state-icon success-icon" aria-hidden="true">OK</div>
+
+    <h3>Commande confirmée</h3>
+
+    <p>
+      Numéro de commande :
+      <strong>{{ orderNumber }}</strong>
+    </p>
+
+    <div class="confirmed-products" *ngIf="confirmedOrder?.items?.length">
+      <h4>Articles commandés</h4>
+
+      <div class="confirmed-product" *ngFor="let item of confirmedOrder?.items">
+        <div>
+          <strong>{{ item.product.name }}</strong>
+          <span>Quantité : {{ item.quantity }}</span>
+        </div>
+
+        <span>
+          {{ item.unitPrice * item.quantity | number:'1.2-2' }} TND
+        </span>
+      </div>
+
+      <div class="confirmed-total">
+        <span>Total</span>
+        <strong>{{ confirmedOrder?.totalAmount | number:'1.2-2' }} TND</strong>
+      </div>
+    </div>
+
+    <p class="payment-info">
+      <strong>Paiement à la livraison</strong> - Aucun paiement en ligne requis
+    </p>
+
+    <a routerLink="/orders" class="btn-primary">Voir mes commandes</a>
+  </div>
+
+  <div class="empty-cart" *ngIf="(items?.length || 0) === 0 && !confirmed">
+    <div class="state-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M7.2 18.5a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Zm10.2 0a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8ZM4.1 4.4h1.8l2.3 10.1c.2.8.9 1.4 1.8 1.4h7.5c.8 0 1.5-.5 1.8-1.2l2-6.1H7.4" />
+      </svg>
+    </div>
+
+    <h3>Votre panier est vide</h3>
+
+    <p>Ajoutez des produits depuis le catalogue pour préparer votre commande.</p>
+
+    <a routerLink="/catalog" class="btn-primary">Voir le catalogue</a>
+  </div>
+
+  <div class="cart-content" *ngIf="(items?.length || 0) > 0 && !confirmed">
+    <div class="cart-items">
+      <div class="section-title">
+        <h3>Articles</h3>
+        <span>{{ itemCount }} article{{ itemCount > 1 ? 's' : '' }}</span>
+      </div>
+
+      <div class="cart-item" *ngFor="let item of items">
+<div class="item-img">
+  <img
+    *ngIf="productImage(item)"
+    [src]="productImage(item)"
+    [alt]="item.product.name"
+    (error)="onImageError($event)"
+  >
+
+  <span
+    *ngIf="!productImage(item)"
+    class="phone-placeholder"
+    aria-hidden="true"
+  ></span>
+</div>
+
+        <div class="item-info">
+          <h4>{{ item.product.name }}</h4>
+          <p>{{ item.product.price | number:'1.2-2' }} TND</p>
+        </div>
+
+        <div class="item-qty">
+          <button
+            type="button"
+            aria-label="Diminuer la quantité"
+            (click)="updateQty(item.product.id, item.quantity - 1)"
+          >
+            -
+          </button>
+
+          <span>{{ item.quantity }}</span>
+
+          <button
+            type="button"
+            aria-label="Augmenter la quantité"
+            (click)="updateQty(item.product.id, item.quantity + 1)"
+            [disabled]="item.quantity >= item.product.stockQuantity"
+          >
+            +
+          </button>
+        </div>
+
+        <div class="item-subtotal">
+          {{ item.product.price * item.quantity | number:'1.2-2' }} TND
+        </div>
+
+        <button
+          class="btn-remove"
+          type="button"
+          aria-label="Supprimer l'article"
+          (click)="remove(item.product.id)"
+        >
+          <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="M5 7h14M10 11v6M14 11v6M8 7l1-3h6l1 3M7 7l1 14h8l1-14" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="cart-summary">
+  <h3>Récapitulatif</h3>
+
+  <div class="summary-row">
+    <span>Articles</span>
+    <span>{{ itemCount }}</span>
+  </div>
+
+  <div class="summary-row">
+    <span>Sous-total</span>
+    <span>{{ total | number:'1.2-2' }} TND</span>
+  </div>
+
+  <div class="summary-row" *ngIf="freeScreenProtectorCount > 0">
+    <span>Anti-casse offert</span>
+    <span>-{{ loyaltyDiscount | number:'1.2-2' }} TND</span>
+  </div>
+
+  <div class="summary-row muted" *ngIf="freeScreenProtectorCount > 0">
+    <span>Fidélité</span>
+    <span>{{ freeScreenProtectorCount }} gratuit</span>
+  </div>
+
+<div class="summary-row muted">
+  <span>Mode</span>
+  <span>
+{{ delivery.deliveryOption === 'HOME_DELIVERY' ? 'Livraison à domicile' : 'Retrait en boutique' }}  </span>
+</div>
+
+<div class="summary-row">
+  <span>Frais de livraison</span>
+  <span>
+    {{ deliveryFee === 0 ? 'Gratuite' : (deliveryFee | number:'1.2-2') + ' TND' }}
+  </span>
+</div>
+
+<div
+  class="delivery-offer"
+  *ngIf="delivery.deliveryOption === 'HOME_DELIVERY' && deliveryFee > 0"
+>
+  Livraison gratuite pour les commandes qui dépassent 50 TND.
+</div>
+
+<div
+  class="delivery-free"
+  *ngIf="delivery.deliveryOption === 'HOME_DELIVERY' && deliveryFee === 0"
+>
+  Livraison gratuite appliquée.
+</div>
+
+<div class="summary-row total">
+  <span>Total</span>
+  <span class="total-price">{{ (finalTotal || 0) | number:'1.2-2' }} TND</span>
+</div>
+
+  <div class="delivery-card">
+    <div class="delivery-card-header">
+      <div>
+        <span class="delivery-kicker">Livraison</span>
+        <h4>Informations de réception</h4>
+      </div>
+
+      <span class="delivery-secure">Paiement à la livraison</span>
+    </div>
+
+    <div class="delivery-options">
+      <label
+        class="delivery-option"
+        [class.active]="delivery.deliveryOption === 'HOME_DELIVERY'"
+      >
+        <input
+          type="radio"
+          name="deliveryOption"
+          value="HOME_DELIVERY"
+          [(ngModel)]="delivery.deliveryOption"
+          [disabled]="loading"
+        >
+
+        <span class="delivery-icon">⌂</span>
+
+        <span>
+          <strong>Livraison à domicile</strong>
+          <small>Recevez votre commande chez vous</small>
+        </span>
+      </label>
+
+      <label
+        class="delivery-option"
+        [class.active]="delivery.deliveryOption === 'PICKUP'"
+      >
+        <input
+          type="radio"
+          name="deliveryOption"
+          value="PICKUP"
+          [(ngModel)]="delivery.deliveryOption"
+          [disabled]="loading"
+        >
+
+        <span class="delivery-icon">✓</span>
+
+        <span>
+          <strong>Retrait en boutique</strong>
+          <small>Récupération directement au magasin</small>
+        </span>
+      </label>
+    </div>
+
+    <div class="delivery-fields" *ngIf="delivery.deliveryOption === 'HOME_DELIVERY'">
+      <label class="field-group">
+        <span>Téléphone</span>
+        <input
+          type="tel"
+          placeholder="Ex: 11051925"
+          [(ngModel)]="delivery.deliveryPhone"
+          [disabled]="loading"
+        >
+      </label>
+
+<label class="field-group">
+  <span>Ville</span>
+  <input
+    type="text"
+    value="Sousse"
+    [(ngModel)]="delivery.deliveryCity"
+    readonly
+    class="readonly-city"
+  >
+</label>
+
+      <label class="field-group full">
+        <span>Adresse complète</span>
+        <textarea
+          rows="3"
+          placeholder="Rue, quartier, immeuble, étage..."
+          [(ngModel)]="delivery.deliveryAddress"
+          [disabled]="loading"
+        ></textarea>
+      </label>
+    </div>
+
+    <div class="pickup-note" *ngIf="delivery.deliveryOption === 'PICKUP'">
+      Votre commande sera préparée pour un retrait en boutique.
+    </div>
+  </div>
+
+  <p class="payment-note">Paiement à la livraison uniquement.</p>
+
+  <div class="error-msg" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <button
+    class="btn-checkout"
+    type="button"
+    (click)="checkout()"
+    [disabled]="loading"
+  >
+    {{ loading ? 'Traitement...' : 'Valider la commande' }}
+  </button>
+</div>
+</div>

@@ -1,0 +1,72 @@
+@import '../../../../styles/variables';
+
+.page-title { font-size: 2rem; color: $color-primary; margin-bottom: $spacing-xl; }
+
+.empty-state {
+  text-align: center; padding: $spacing-2xl;
+  .empty-icon { font-size: 4rem; margin-bottom: $spacing-lg; }
+  h3 { color: $color-text-primary; margin-bottom: $spacing-sm; }
+  p  { color: $color-text-secondary; margin-bottom: $spacing-xl; }
+}
+
+.btn-primary {
+  display: inline-flex; background: $color-primary; color: white; border: none;
+  border-radius: $border-radius-full; padding: 10px $spacing-xl; font-weight: 600;
+  font-family: $font-body; cursor: pointer; text-decoration: none;
+  &:hover { background: $color-primary-light; }
+}
+
+.orders-list { display: flex; flex-direction: column; gap: $spacing-md; }
+
+.order-card { padding: 0; overflow: hidden; }
+
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $color-surface-alt; }
+}
+
+.order-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-number { font-size: 1rem; color: $color-text-primary; }
+.order-date   { font-size: 0.8125rem; color: $color-text-secondary; }
+
+.order-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.order-total { font-weight: 700; font-size: 1.0625rem; color: $color-primary; }
+
+.expand-icon {
+  color: $color-text-secondary;
+  transition: transform $transition-fast;
+  font-size: 0.75rem;
+  &.rotated { transform: rotate(180deg); }
+}
+
+.order-details { padding: 0 $spacing-lg $spacing-lg; }
+
+.divider { height: 1px; background: $color-border; margin-bottom: $spacing-md; }
+
+.order-items { display: flex; flex-direction: column; gap: $spacing-xs; }
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9375rem;
+  padding: 4px 0;
+}
+
+.item-name  { color: $color-text-primary; }
+.item-price { color: $color-primary; font-weight: 600; }

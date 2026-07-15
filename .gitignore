@@ -1,0 +1,29 @@
+# Variables d'environnement (ne pas commiter les secrets)
+.env
+
+# Dépendances Node.js
+node_modules/
+
+# Artefacts de build
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Éditeurs
+.DS_Store
+Thumbs.db
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Coverage
+coverage/
+
+# TypeScript
+*.tsbuildinfo

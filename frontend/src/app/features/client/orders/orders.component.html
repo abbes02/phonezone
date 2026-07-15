@@ -1,0 +1,20 @@
+<div class="repairs-page">
+  <h2>Mes Commandes</h2>
+  <app-spinner *ngIf="loading"></app-spinner>
+  <div *ngIf="!loading">
+    <div class="repair-card" style="margin-bottom:12px;" *ngFor="let o of orders" (click)="selected = selected?.id === o.id ? null : o" style="cursor:pointer;">
+      <div class="repair-header">
+        <span class="ref">{{ o.orderNumber }}</span>
+        <app-badge [status]="o.status"></app-badge>
+      </div>
+      <p>{{ o.createdAt | date:'dd/MM/yyyy' }} — <strong>{{ o.totalAmount | number:'1.2-2' }} TND</strong></p>
+      <div *ngIf="selected?.id === o.id" style="margin-top:12px; border-top:1px solid #F1F5F9; padding-top:12px;">
+        <div *ngFor="let item of o.items" style="display:flex; justify-content:space-between; font-size:.875rem; padding:4px 0;">
+          <span>{{ item.product.name }} × {{ item.quantity }}</span>
+          <span>{{ (item.unitPrice * item.quantity) | number:'1.2-2' }} TND</span>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="orders.length === 0" class="empty">Aucune commande pour le moment</p>
+  </div>
+</div>

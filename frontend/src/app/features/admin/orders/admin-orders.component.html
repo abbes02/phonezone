@@ -1,0 +1,110 @@
+<div class="admin-page">
+  <div class="page-header">
+    <h2>Gestion des Commandes</h2>
+  </div>
+
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <div class="table-card" *ngIf="!loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Numéro</th>
+          <th>Client</th>
+          <th>Articles commandés</th>
+          <th>Date</th>
+          <th>Montant</th>
+          <th>Livraison</th>
+          <th>Statut</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let o of orders">
+          <td>
+            <code>{{ o.orderNumber }}</code>
+          </td>
+
+          <td>
+            <strong>{{ o.user?.fullName ?? '—' }}</strong>
+            <div *ngIf="o.user?.email" style="color:#64748B; font-size:.8rem; margin-top:4px;">
+              {{ o.user?.email }}
+            </div>
+          </td>
+
+          <td>
+            <div *ngIf="o.items?.length; else noItems">
+              <div
+                *ngFor="let item of o.items"
+                style="display:flex; justify-content:space-between; gap:12px; padding:4px 0; min-width:220px;"
+              >
+                <span>
+                  <strong>{{ item.product.name }}</strong>
+                  × {{ item.quantity }}
+                  <small *ngIf="item.unitPrice === 0" style="color:#16A34A; font-weight:700;">
+                    offert
+                  </small>
+                </span>
+
+                <span style="white-space:nowrap; font-weight:700; color:#1A237E;">
+                  {{ item.unitPrice * item.quantity | number:'1.2-2' }} TND
+                </span>
+              </div>
+            </div>
+
+            <ng-template #noItems>
+              <span>—</span>
+            </ng-template>
+          </td>
+
+          <td>{{ o.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+
+          <td>{{ o.totalAmount | number:'1.2-2' }} TND</td>
+
+          <td>
+            <strong>{{ getDeliveryLabel(o) }}</strong>
+
+            <div *ngIf="o.deliveryOption === 'HOME_DELIVERY'; else pickupBlock" style="color:#64748B; font-size:.8rem; margin-top:6px; line-height:1.5;">
+              <div>Tél : <b>{{ o.deliveryPhone || '—' }}</b></div>
+              <div>Ville : <b>{{ o.deliveryCity || '—' }}</b></div>
+              <div>Adresse : <b>{{ o.deliveryAddress || '—' }}</b></div>
+            </div>
+
+            <ng-template #pickupBlock>
+              <div style="color:#64748B; font-size:.8rem; margin-top:6px;">
+                Retrait en boutique
+              </div>
+            </ng-template>
+          </td>
+
+          <td>
+            <app-badge [status]="o.status"></app-badge>
+          </td>
+
+          <td>
+            <select
+              class="status-select"
+              [value]="o.status"
+              (change)="updateStatus(o.id, $any($event.target).value)"
+            >
+              <option *ngFor="let s of statuses" [value]="s">
+                {{ s }}
+              </option>
+            </select>
+          </td>
+        </tr>
+
+        <tr *ngIf="orders.length === 0">
+          <td colspan="8" class="empty">Aucune commande</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-pagination
+      [currentPage]="page"
+      [totalPages]="totalPages"
+      (pageChange)="page = $event; load()"
+    ></app-pagination>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+// ── Palette de couleurs ────────────────────────────────────────────────────
+$color-primary:       #1A237E;
+$color-primary-light: #1565C0;
+$color-primary-dark:  #0D1458;
+$color-accent:        #FFB300;
+$color-accent-light:  #FFD54F;
+$color-accent-dark:   #E65100;
+
+$color-surface:       #FFFFFF;
+$color-surface-alt:   #F5F7FA;
+$color-border:        #E2E8F0;
+
+$color-text-primary:  #1C1C2E;
+$color-text-secondary:#6B7280;
+$color-text-light:    #FFFFFF;
+
+$color-success:       #22C55E;
+$color-warning:       #F59E0B;
+$color-error:         #EF4444;
+$color-info:          #06B6D4;
+
+// ── Typographie ───────────────────────────────────────────────────────────
+$font-heading: 'Poppins', sans-serif;
+$font-body:    'Inter', sans-serif;
+
+// ── Espacements ───────────────────────────────────────────────────────────
+$spacing-xs:  4px;
+$spacing-sm:  8px;
+$spacing-md:  16px;
+$spacing-lg:  24px;
+$spacing-xl:  32px;
+$spacing-2xl: 48px;
+
+// ── Bordures & Ombres ─────────────────────────────────────────────────────
+$border-radius-sm:  8px;
+$border-radius-md:  12px;
+$border-radius-lg:  16px;
+$border-radius-xl:  24px;
+$border-radius-full:9999px;
+
+$shadow-sm:  0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+$shadow-md:  0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.05);
+$shadow-lg:  0 10px 25px rgba(0,0,0,.1), 0 4px 10px rgba(0,0,0,.06);
+$shadow-xl:  0 20px 40px rgba(0,0,0,.12);
+
+// ── Transitions ───────────────────────────────────────────────────────────
+$transition-fast:   150ms ease-in-out;
+$transition-normal: 250ms ease-in-out;
+$transition-slow:   400ms ease-in-out;
+
+// ── Breakpoints ───────────────────────────────────────────────────────────
+$bp-sm:  576px;
+$bp-md:  768px;
+$bp-lg:  992px;
+$bp-xl:  1200px;

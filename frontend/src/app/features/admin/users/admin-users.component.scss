@@ -1,0 +1,12 @@
+@import '../../../../styles/variables';
+.page-title { font-size: 2rem; color: $color-primary; margin-bottom: $spacing-xl; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: $spacing-lg; flex-wrap: wrap; gap: $spacing-md; }
+.search-wrapper { position: relative; }
+.search-wrapper svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: $color-text-secondary; }
+.search-input { padding: 8px 12px 8px 36px; border: 1px solid $color-border; border-radius: $border-radius-sm; font-family: $font-body; outline: none; width: 240px; &:focus { border-color: $color-primary; } }
+.actions { display: flex; gap: $spacing-xs; }
+.btn-primary { background: $color-primary; color: white; border: none; border-radius: $border-radius-sm; padding: 8px 16px; font-weight: 600; font-family: $font-body; cursor: pointer; &:hover { background: $color-primary-light; } &:disabled { opacity:.6; cursor:not-allowed; } }
+.btn-outline { background: transparent; color: $color-primary; border: 1px solid $color-primary; border-radius: $border-radius-sm; padding: 6px 12px; font-weight: 600; font-family: $font-body; font-size: .875rem; cursor: pointer; &:hover { background: $color-primary; color: white; } }
+.btn-danger  { background: $color-error; color: white; border: none; border-radius: $border-radius-sm; padding: 6px 12px; font-weight: 600; font-family: $font-body; font-size: .875rem; cursor: pointer; &:hover { background: darken(#EF4444, 10%); } &:disabled { opacity:.6; cursor:not-allowed; } }
+.btn-sm { padding: 5px 12px; font-size: 0.8125rem; }
+.empty-cell { text-align: center; color: $color-text-secondary; padding: $spacing-xl !important; }

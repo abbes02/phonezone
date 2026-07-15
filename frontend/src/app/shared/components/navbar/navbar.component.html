@@ -1,0 +1,184 @@
+<nav class="navbar" [class.auth-navbar]="isAuthPage">
+  <div class="navbar-container">
+    <a routerLink="/home" class="navbar-brand" (click)="closeMenus()">
+      <img src="assets/logoo.png" alt="PhoneZone" class="navbar-logo">
+    </a>
+
+    <div class="navbar-links" [class.open]="mobileMenuOpen" *ngIf="!isAuthPage">
+      <ng-container *ngIf="!isAdmin()">
+        <a routerLink="/home" routerLinkActive="active" class="nav-link" (click)="closeMenus()">
+          Accueil
+        </a>
+
+        <a routerLink="/catalog" routerLinkActive="active" class="nav-link" (click)="closeMenus()">
+          Catalogue
+        </a>
+
+        <a routerLink="/repairs" routerLinkActive="active" class="nav-link" (click)="closeMenus()">
+          Réparations
+        </a>
+
+        <a
+          routerLink="/questions"
+          routerLinkActive="active"
+          class="nav-link"
+          *ngIf="isLoggedIn()"
+          (click)="closeMenus()"
+        >
+          Questions
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf="isAdmin()">
+        <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link" (click)="closeMenus()">
+          Dashboard
+        </a>
+      </ng-container>
+    </div>
+
+    <div class="navbar-actions">
+      <ng-container *ngIf="isAuthPage">
+        <a routerLink="/home" class="auth-nav-link" (click)="closeMenus()">
+          Accueil
+        </a>
+
+        <a
+          routerLink="/login"
+          class="auth-nav-btn"
+          *ngIf="isRegisterPage"
+          (click)="closeMenus()"
+        >
+          Connexion
+        </a>
+
+        <a
+          routerLink="/register"
+          class="auth-nav-btn auth-nav-btn-accent"
+          *ngIf="isLoginPage"
+          (click)="closeMenus()"
+        >
+          Créer un compte
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf="!isAuthPage">
+        <a
+          routerLink="/cart"
+          class="action-btn cart-btn"
+          *ngIf="!isAdmin() && isLoggedIn()"
+          aria-label="Panier"
+          (click)="closeMenus()"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M7.2 18.5a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Zm10.2 0a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8ZM4.1 4.4h1.8l2.3 10.1c.2.8.9 1.4 1.8 1.4h7.5c.8 0 1.5-.5 1.8-1.2l2-6.1H7.4" />
+            </svg>
+          </span>
+
+          <span class="action-label">Panier</span>
+
+          <span class="badge-count" *ngIf="cartCount > 0">
+            {{ cartCount }}
+          </span>
+        </a>
+
+        <a
+          routerLink="/admin/notifications"
+          class="action-btn notif-btn"
+          *ngIf="isAdmin()"
+          aria-label="Alertes"
+          (click)="closeMenus()"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M18 9.8c0-3.1-1.9-5.2-5-5.7V3a1 1 0 0 0-2 0v1.1c-3.1.5-5 2.6-5 5.7v3.4l-1.5 2.5h17L18 13.2V9.8ZM9.5 18.4a2.6 2.6 0 0 0 5 0" />
+            </svg>
+          </span>
+
+          <span class="action-label">Alertes</span>
+
+          <span class="badge-count badge-notif" *ngIf="unreadCount > 0">
+            {{ unreadCount }}
+          </span>
+        </a>
+
+        <ng-container *ngIf="!isLoggedIn()">
+          <a routerLink="/login" class="btn-nav" (click)="closeMenus()">
+            Connexion
+          </a>
+
+          <a routerLink="/register" class="btn-nav btn-nav-accent" (click)="closeMenus()">
+            S’inscrire
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn()">
+          <div class="user-menu">
+            <button
+              class="profile-trigger"
+              type="button"
+              (click)="toggleProfileMenu()"
+              aria-label="Menu profil"
+              [attr.aria-expanded]="profileMenuOpen"
+            >
+              <span class="user-avatar">{{ getInitials() }}</span>
+
+              <span class="profile-meta">
+                <span class="profile-name">{{ user?.fullName }}</span>
+                <span class="profile-role">{{ isAdmin() ? 'Admin' : 'Client' }}</span>
+              </span>
+
+              <span class="chevron" [class.open]="profileMenuOpen" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="m7 10 5 5 5-5" />
+                </svg>
+              </span>
+            </button>
+
+            <div class="dropdown" *ngIf="profileMenuOpen">
+              <div class="dropdown-head">
+                <span class="dropdown-avatar">{{ getInitials() }}</span>
+
+                <span>
+                  <span class="dropdown-name">{{ user?.fullName }}</span>
+                  <span class="dropdown-email">{{ user?.email }}</span>
+                </span>
+              </div>
+
+              <a routerLink="/loyalty" class="dropdown-item" *ngIf="!isAdmin()" (click)="closeMenus()">
+                <span class="dropdown-icon" aria-hidden="true">%</span>
+                Fidélité
+              </a>
+
+              <a routerLink="/orders" class="dropdown-item" *ngIf="!isAdmin()" (click)="closeMenus()">
+                <span class="dropdown-icon" aria-hidden="true">#</span>
+                Mes commandes
+              </a>
+
+              <a routerLink="/admin/notifications" class="dropdown-item" *ngIf="isAdmin()" (click)="closeMenus()">
+                <span class="dropdown-icon" aria-hidden="true">!</span>
+                Notifications
+              </a>
+
+              <button class="dropdown-item logout-btn" type="button" (click)="logout()">
+                Déconnexion
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <button
+          class="hamburger"
+          type="button"
+          (click)="toggleMobileMenu()"
+          aria-label="Menu"
+          [attr.aria-expanded]="mobileMenuOpen"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</nav>

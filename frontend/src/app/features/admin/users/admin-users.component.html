@@ -1,0 +1,103 @@
+<div class="admin-page">
+  <div class="page-header">
+    <h2>Gestion des Utilisateurs</h2>
+
+    <input
+      class="search-input"
+      type="text"
+      placeholder="🔍 Rechercher..."
+      [(ngModel)]="search"
+      (input)="page = 1; load()"
+    >
+  </div>
+
+  <div class="error-msg" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <div class="table-card" *ngIf="!loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th>Inscription</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let u of users">
+          <td>{{ u.fullName }}</td>
+
+          <td>{{ u.email }}</td>
+
+          <td>
+            <app-badge
+              [status]="u.role === 'ADMIN' ? 'CONFIRMED' : 'PENDING'"
+            ></app-badge>
+
+            <span class="role-text">
+              {{ u.role === 'ADMIN' ? 'ADMIN' : 'CLIENT' }}
+            </span>
+          </td>
+
+          <td>{{ u.createdAt | date:'dd/MM/yyyy' }}</td>
+
+          <td>
+            <span [style.color]="u.isActive ? '#16A34A' : '#DC2626'">
+              {{ u.isActive ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+
+          <td class="actions">
+            <button
+              class="btn-edit"
+              type="button"
+              (click)="changeRole(u)"
+              [title]="u.role === 'ADMIN' ? 'Changer vers CLIENT' : 'Changer vers ADMIN'"
+            >
+              {{ u.role === 'ADMIN' ? 'CLIENT' : 'ADMIN' }}
+            </button>
+
+            <button
+              class="btn-delete"
+              type="button"
+              *ngIf="u.isActive"
+              (click)="deactivate(u)"
+              title="Désactiver"
+            >
+              Désactiver
+            </button>
+
+            <button
+              class="btn-edit"
+              type="button"
+              *ngIf="!u.isActive"
+              (click)="activate(u)"
+              title="Réactiver"
+            >
+              Réactiver
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="users.length === 0">
+          <td colspan="6" class="empty">
+            Aucun utilisateur
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-pagination
+      [currentPage]="page"
+      [totalPages]="totalPages"
+      (pageChange)="page = $event; load()"
+    ></app-pagination>
+  </div>
+</div>

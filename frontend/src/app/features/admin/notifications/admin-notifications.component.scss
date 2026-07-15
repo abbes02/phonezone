@@ -1,0 +1,24 @@
+@import '../../../../styles/variables';
+
+.page-title { font-size: 2rem; color: $color-primary; margin-bottom: $spacing-xl; }
+
+.notifications-list { display: flex; flex-direction: column; gap: $spacing-md; max-width: 700px; }
+
+.notif-item {
+  display: flex; align-items: center; gap: $spacing-md;
+  cursor: pointer; padding: $spacing-md $spacing-lg;
+  transition: background $transition-fast;
+
+  &:hover { background: rgba(26,35,126,.02); }
+  &.unread { border-left: 3px solid $color-primary; }
+}
+
+.notif-icon-wrap { position: relative; flex-shrink: 0; }
+.notif-icon { font-size: 1.5rem; display: block; width: 40px; height: 40px; border-radius: 50%; background: $color-surface-alt; display: flex; align-items: center; justify-content: center; }
+.unread-dot { position: absolute; top: 0; right: 0; width: 10px; height: 10px; background: $color-primary; border-radius: 50%; border: 2px solid white; }
+
+.notif-content { flex: 1; }
+.notif-message { font-size: .9375rem; color: $color-text-primary; margin: 0 0 4px; }
+.notif-meta    { font-size: .8125rem; color: $color-text-secondary; }
+
+.empty-state { text-align: center; padding: $spacing-2xl; color: $color-text-secondary; font-size: 1.0625rem; }

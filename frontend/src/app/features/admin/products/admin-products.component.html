@@ -1,0 +1,154 @@
+<div class="admin-page">
+  <div class="page-header">
+    <h2>Gestion des Produits</h2>
+    <button class="btn-accent" (click)="openNew()">+ Ajouter un produit</button>
+  </div>
+
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <div class="table-card" *ngIf="!loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Nom</th>
+          <th>Catégorie</th>
+          <th>Prix</th>
+          <th>Stock</th>
+          <th>Images</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of products">
+          <td>
+            <img
+              class="product-thumb"
+              *ngIf="p.imageUrls.length"
+              [src]="imageUrl(p.imageUrls[0])"
+              [alt]="p.name"
+            >
+
+            <span class="product-thumb placeholder" *ngIf="!p.imageUrls?.length">
+              -
+            </span>
+          </td>
+
+          <td>{{ p.name }}</td>
+          <td>{{ p.category }}</td>
+          <td>{{ p.price | number:'1.2-2' }} TND</td>
+          <td>{{ p.stockQuantity }}</td>
+          <td>{{ p.imageUrls.length || 0 }} image(s)</td>
+
+          <td>
+            <app-badge [status]="p.isActive ? 'CONFIRMED' : 'CANCELLED'"></app-badge>
+          </td>
+
+          <td class="actions">
+            <button class="btn-edit" (click)="openEdit(p)">Modifier</button>
+            <button class="btn-delete" (click)="delete(p.id)">Supprimer</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="products.length === 0">
+          <td colspan="8" class="empty">Aucun produit</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-pagination
+      [currentPage]="page"
+      [totalPages]="totalPages"
+      (pageChange)="page = $event; load()"
+    ></app-pagination>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showForm" (click)="closeForm()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h3>{{ editingId ? 'Modifier le produit' : 'Nouveau produit' }}</h3>
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="form-group">
+          <label>Nom</label>
+          <input formControlName="name" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea formControlName="description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select formControlName="category" class="form-control">
+            <option *ngFor="let c of categories" [value]="c.value">
+              {{ c.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prix (TND)</label>
+            <input
+              type="number"
+              formControlName="price"
+              class="form-control"
+              step="0.01"
+              min="0.01"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Stock</label>
+            <input
+              type="number"
+              formControlName="stockQuantity"
+              class="form-control"
+              min="0"
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Images du produit</label>
+
+          <input
+            type="file"
+            class="form-control"
+            accept="image/png,image/jpeg,image/webp"
+            multiple
+            (change)="onImagesSelected($event)"
+          >
+
+          <span class="file-hint" *ngIf="selectedImages.length">
+            {{ selectedImages.length }} image(s) sélectionnée(s)
+          </span>
+
+          <div class="preview-grid" *ngIf="selectedImagePreviews.length">
+            <div class="preview-item" *ngFor="let img of selectedImagePreviews; let i = index">
+              <img [src]="img" alt="Image produit">
+              <button type="button" (click)="removeSelectedImage(i)">×</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="error-msg" *ngIf="error">
+          {{ error }}
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="closeForm()">
+            Annuler
+          </button>
+
+          <button type="submit" class="btn-primary">
+            Enregistrer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

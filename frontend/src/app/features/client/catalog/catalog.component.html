@@ -1,0 +1,108 @@
+<div class="catalog-page">
+
+  <!-- HEADER MODERNE -->
+  <header class="catalog-hero">
+    <div class="hero-left">
+      <span class="kicker">PhoneZone · Boutique</span>
+      <h1>Découvrez nos produits</h1>
+      <p>Smartphones, accessoires et protections sélectionnés pour vous.</p>
+    </div>
+
+    <div class="hero-search">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" class="search-icon">
+          <path d="M21 21l-4.3-4.3m1.8-5.2a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+
+        <input
+          type="text"
+          placeholder="Rechercher un produit..."
+          [value]="search"
+          (input)="onSearch($any($event.target).value)"
+        />
+      </div>
+    </div>
+  </header>
+
+  <!-- FILTRES STYLE CHIPS -->
+  <div class="filter-chips">
+    <button
+      *ngFor="let cat of categories"
+      class="chip"
+      [class.active]="category === cat.value"
+      (click)="setCategory(cat.value)"
+    >
+      {{ cat.label }}
+    </button>
+  </div>
+
+  <!-- LOADING -->
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <!-- GRID PRODUITS -->
+  <div class="products-grid" *ngIf="!loading">
+
+    <article
+      class="product-card"
+      *ngFor="let p of products"
+      (click)="openProduct(p)"
+      tabindex="0"
+      (keyup.enter)="openProduct(p)"
+    >
+
+      <div class="product-image">
+        <img *ngIf="p.imageUrls?.length" [src]="imageUrl(p.imageUrls[0])" [alt]="p.name">
+        <div class="placeholder" *ngIf="!p.imageUrls?.length">PHONE</div>
+
+        <span class="stock" [class.out]="!p.isActive">
+          {{ p.isActive ? 'Disponible' : 'Rupture' }}
+        </span>
+      </div>
+
+      <div class="product-body">
+        <span class="tag">
+          {{ p.category === 'PHONE' ? 'Téléphone' :
+             p.category === 'ACCESSORY' ? 'Accessoire' : 'Protection' }}
+        </span>
+
+        <h3>{{ p.name }}</h3>
+
+        <p *ngIf="p.description">
+          {{ p.description | slice:0:90 }}{{ p.description.length > 90 ? '...' : '' }}
+        </p>
+
+        <div class="product-footer">
+          <span class="price">{{ p.price | number:'1.2-2' }} TND</span>
+
+          <button
+            class="btn-add"
+            [disabled]="!p.isActive"
+            (click)="addToCart(p, $event)"
+            [class.added]="addedId === p.id"
+          >
+            {{ addedId === p.id ? 'Ajouté' : 'Ajouter' }}
+          </button>
+        </div>
+      </div>
+
+    </article>
+
+    <div class="empty-state" *ngIf="products.length === 0">
+      <h3>Aucun produit trouvé</h3>
+      <p>Essayez de changer la catégorie ou la recherche.</p>
+
+      <button class="btn-reset" (click)="setCategory(''); onSearch('')">
+        Réinitialiser
+      </button>
+    </div>
+
+  </div>
+
+  <!-- PAGINATION -->
+  <app-pagination
+    [currentPage]="page"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+
+</div>

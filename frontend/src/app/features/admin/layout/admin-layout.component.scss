@@ -1,0 +1,10 @@
+.admin-layout { display: flex; min-height: 100vh; }
+.sidebar { width: 240px; background: #1A237E; color: #fff; display: flex; flex-direction: column; padding: 24px 0; flex-shrink: 0; }
+.sidebar-brand { display: flex; align-items: center; gap: 10px; padding: 0 20px 24px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 16px; span { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: .95rem; color: #FFB300; } }
+.sidebar-logo { height: 36px; }
+.sidebar-nav { display: flex; flex-direction: column; flex: 1; }
+.nav-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; color: rgba(255,255,255,.75); text-decoration: none; font-size: .9rem; transition: all .2s; &:hover, &.active { background: rgba(255,255,255,.12); color: #fff; } }
+.notif-badge { background: #EF4444; color: #fff; font-size: .7rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+.logout-btn { margin: 16px 20px 0; padding: 10px; background: rgba(239,68,68,.2); color: #FCA5A5; border: 1px solid rgba(239,68,68,.3); border-radius: 8px; cursor: pointer; font-size: .875rem; transition: all .2s; &:hover { background: rgba(239,68,68,.3); } }
+.admin-content { flex: 1; background: #F5F7FA; overflow-y: auto; }
+@media (max-width: 768px) { .sidebar { width: 200px; } }

@@ -1,0 +1,37 @@
+@import '../../../../styles/variables';
+
+.spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+
+  &.spinner-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 9000;
+  }
+}
+
+.spinner {
+  border: 3px solid $color-border;
+  border-top-color: $color-primary;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+
+  &.spinner-sm { width: 20px; height: 20px; }
+  &.spinner-md { width: 36px; height: 36px; }
+  &.spinner-lg { width: 56px; height: 56px; border-width: 4px; }
+}
+
+.spinner-message {
+  margin-top: $spacing-sm;
+  color: $color-text-secondary;
+  font-size: 0.875rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

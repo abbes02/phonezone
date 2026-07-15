@@ -1,0 +1,25 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img src="assets/logoo.png" alt="PhoneZone" class="sidebar-logo">
+      <span>PhoneZone Admin</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item">📊 Dashboard</a>
+      <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">👥 Utilisateurs</a>
+      <a routerLink="/admin/products" routerLinkActive="active" class="nav-item">📱 Produits</a>
+      <a routerLink="/admin/orders" routerLinkActive="active" class="nav-item">📦 Commandes</a>
+      <a routerLink="/admin/repairs" routerLinkActive="active" class="nav-item">🔧 Réparations</a>
+      <a routerLink="/admin/questions" routerLinkActive="active" class="nav-item">❓ Questions</a>
+      <a routerLink="/admin/notifications" routerLinkActive="active" class="nav-item">
+        🔔 Notifications
+        <span class="notif-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+      </a>
+      <a routerLink="/admin/repair-services" routerLinkActive="active" class="nav-item">🛠️ Services Répa.</a>
+    </nav>
+    <button class="logout-btn" (click)="logout()">🚪 Déconnexion</button>
+  </aside>
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

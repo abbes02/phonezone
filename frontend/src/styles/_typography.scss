@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+@import 'variables';
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: $font-body;
+  color: $color-text-primary;
+  background-color: $color-surface-alt;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-heading;
+  font-weight: 600;
+  line-height: 1.3;
+  color: $color-text-primary;
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+p { color: $color-text-secondary; line-height: 1.7; }
+
+a { color: $color-primary-light; text-decoration: none; transition: color $transition-fast; }
+a:hover { color: $color-primary; }
+
+.text-primary   { color: $color-primary !important; }
+.text-accent    { color: $color-accent !important; }
+.text-success   { color: $color-success !important; }
+.text-error     { color: $color-error !important; }
+.text-muted     { color: $color-text-secondary !important; }
+.text-center    { text-align: center; }
+
+.fw-semibold { font-weight: 600; }
+.fw-bold     { font-weight: 700; }

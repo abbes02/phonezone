@@ -1,0 +1,227 @@
+.loyalty-page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 36px 24px 52px;
+}
+
+.loyalty-header {
+  max-width: 680px;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 10px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 179, 0, .42);
+  border-radius: 999px;
+  background: #fff3c4;
+  color: #1a237e;
+  font-size: .76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+h2,
+h3,
+h4 {
+  font-family: Poppins, sans-serif;
+  color: #1a237e;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.8rem, 4vw, 2.45rem);
+}
+
+.loyalty-header p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.65;
+}
+
+.loyalty-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-bottom: 26px;
+}
+
+.loyalty-card {
+  min-height: 360px;
+  padding: 26px;
+  border: 1px solid #e8edf5;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(26, 35, 126, .09);
+}
+
+.anti-card {
+  background: linear-gradient(135deg, rgba(255, 179, 0, .18), transparent 42%), #fff;
+}
+
+.repair-card {
+  background: linear-gradient(135deg, rgba(26, 35, 126, .1), transparent 42%), #fff;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+}
+
+.shield-icon {
+  background: #fff3c4;
+  color: #1a237e;
+}
+
+.repair-icon {
+  background: #eef2ff;
+  color: #1a237e;
+}
+
+.card-icon svg {
+  width: 31px;
+  height: 31px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.benefit-tag {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: #ffb300;
+  color: #0d1458;
+  font-size: .82rem;
+  font-weight: 900;
+}
+
+.benefit-tag.blue {
+  background: #1a237e;
+  color: #fff;
+}
+
+.loyalty-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+}
+
+.loyalty-card p {
+  min-height: 48px;
+  margin: 0 0 22px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.counter-line {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.counter-line strong {
+  color: #1a237e;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.counter-line span {
+  color: #64748b;
+  font-size: .84rem;
+  font-weight: 800;
+  text-align: right;
+}
+
+.progress-bar {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width .6s ease;
+}
+
+.progress-fill.accent {
+  background: linear-gradient(90deg, #ffb300, #ffd54f);
+}
+
+.progress-fill.primary {
+  background: linear-gradient(90deg, #1a237e, #1565c0);
+}
+
+.vouchers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.voucher-badge {
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ffb300, #ffd54f);
+  color: #1a237e;
+  font-size: .9rem;
+  font-weight: 900;
+}
+
+.voucher-badge.repair {
+  background: linear-gradient(135deg, #1a237e, #1565c0);
+  color: #fff;
+}
+
+.info-box {
+  padding: 24px;
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  background: #eff6ff;
+}
+
+.info-box h4 {
+  margin: 0 0 12px;
+}
+
+.info-box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.info-box li {
+  padding: 6px 0;
+  color: #374151;
+  line-height: 1.5;
+}
+
+@media (max-width: 780px) {
+  .loyalty-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .loyalty-card {
+    min-height: 0;
+  }
+}

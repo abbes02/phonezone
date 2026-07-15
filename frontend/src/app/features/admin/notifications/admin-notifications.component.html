@@ -1,0 +1,23 @@
+<div class="admin-page">
+  <div class="page-header"><h2>Centre de Notifications</h2></div>
+  <app-spinner *ngIf="loading"></app-spinner>
+  <div class="notif-list" *ngIf="!loading">
+    <div class="notif-item" *ngFor="let n of notifications"
+      [class.unread]="!n.isRead" (click)="markRead(n)" style="cursor:pointer;">
+      <span class="notif-icon">{{ getIcon(n.type) }}</span>
+      <div class="notif-body" style="flex:1;">
+        <p style="margin:0; font-size:.9rem; color:#1C1C2E;">{{ n.message }}</p>
+        <span style="font-size:.75rem; color:#6B7280;">{{ n.clientName }} · {{ n.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <span class="unread-dot" *ngIf="!n.isRead"></span>
+    </div>
+    <p *ngIf="notifications.length === 0" class="empty" style="text-align:center; padding:40px; color:#6B7280;">Aucune notification</p>
+  </div>
+</div>
+
+<style>
+.notif-list { background:#fff; border-radius:16px; padding:8px; box-shadow:0 4px 12px rgba(0,0,0,.06); }
+.notif-item { display:flex; align-items:center; gap:16px; padding:14px 16px; border-radius:10px; transition:background .15s; &:hover { background:#F5F7FA; } &.unread { background:#EFF6FF; } }
+.notif-icon { font-size:1.5rem; }
+.unread-dot { width:8px; height:8px; border-radius:50%; background:#1A237E; flex-shrink:0; }
+</style>
